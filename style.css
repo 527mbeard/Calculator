@@ -1,4 +1,8 @@
 
+body{
+  background-color: rgb(39, 159, 196);
+}
+
 .calc-display {
   background: #0b1220;
   color: #e9eefc;
@@ -24,4 +28,8 @@
 .calc-status {
   min-height: 1.2rem;
   opacity: 0.85;
+}
+
+.card{
+  background-color:pink;
 }
