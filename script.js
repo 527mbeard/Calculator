@@ -39,3 +39,17 @@ function pressNumber(digit) {
     updateScreen()
 }
 
+function pressOperator(op) {
+    setStatus("")
+    if (typedNumberText === "" && storedNumber === null) {
+        setStatus("Enter a number first!");
+        return
+    }
+    if (storedNumber === null) {
+        storedNumber = Number(typedNumberText)
+        currentOperator = op
+        historyParts = [String(storedNumber), currentOperator]
+        typedNumberText = ''
+        updateScreen();
+    } 
+}
