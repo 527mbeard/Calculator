@@ -26,10 +26,10 @@ function updateScreen() {
     const display = document.getElementById('displayLine')
     const history = document.getElementById('historyLine')
     const status = document.getElementById('statusLine')
-    
+
     if (typedNumberText !== '') {
-        display.textContent = typedNumberText 
-    }else {
+        display.textContent = typedNumberText
+    } else {
         display.textContent = '0'
     }
 
@@ -40,13 +40,13 @@ function updateScreen() {
         history.textContent = historyParts[0]
     }
     if (historyParts.length === 2) {
-        history.textContent = historyParts[0] + ' ' + showSymbol(historyParts[1])   
+        history.textContent = historyParts[0] + ' ' + showSymbol(historyParts[1])
     }
     if (historyParts.length === 3) {
-        history.textContent = historyParts[0] + ' ' + showSymbol(historyParts[1])+ ' ' + showSymbol(historyParts[2])
-    }     
-    if(status.textContent === '') {
-        status.textContent = 'Ready'   
+        history.textContent = historyParts[0] + ' ' + showSymbol(historyParts[1]) + ' ' + showSymbol(historyParts[2])
+    }
+    if (status.textContent === '') {
+        status.textContent = 'Ready'
     }
 }
 
@@ -73,15 +73,35 @@ function pressOperator(op) {
         historyParts = [String(storedNumber), currentOperator]
         typedNumberText = ''
         updateScreen();
-    } 
-    if(typedNumberText !=='') {
+    }
+    if (typedNumberText !== '') {
         const secondNumber = typedNumberText
         if (currentOperator === '/' && secondNumber === '0') {
             setStatus("Cannot divide by zero!")
             updateScreen()
             return
-        } 
+        }
     }
+
+    let result = storedNumber
+    if (currentOperator === '+') {
+        result = storedNumber + secondNumber
+    } else if (currentOperator === '-') {
+        result = storedNumber - secondNumber
+    } else if (currentOperator === '*') {
+        result = storedNumber * secondNumber
+    } else if (currentOperator === '/') {
+        result = storedNumber / secondNumber
+    }
+
+    storedNumber = result
+    currentOperator = op
+    historyParts = [String(storedNumber), currentOperator]
+    typedNumberText = ''
+    setStatus('')
+    updateScreen()
+    return
+
 }
 
 function clearAll() {
@@ -91,4 +111,31 @@ function clearAll() {
     historyParts = []
     setStatus('Cleared')
     updateScreen()
-}   
+}
+
+function calculate() {
+    setStatus('')
+    if (storedNumber === null || currentOperator === '' || typedNumberText === '') {
+        setStatus("You have an incomplete expression!")
+        updateScreen();
+    }
+    const secondNumber = Number(typedNumberText)
+    historyParts = [String(storedNumber), currentOperator, String(secondNumber)]
+
+    let result = storedNumber
+    if (currentOperator === '+') {
+        result = storedNumber + secondNumber
+    } else if (currentOperator === '-') {
+        result = storedNumber - secondNumber
+    } else if (currentOperator === '*') {
+        result = storedNumber * secondNumber
+    } else if (currentOperator === '/') {
+        result = storedNumber / secondNumber
+    }
+
+    storedNumber = result
+    currentOperator = ''
+    typedNumberText = ''
+    setStatus('Done')
+    updateScreen()
+}
